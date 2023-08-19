@@ -57,10 +57,30 @@ public class MainActivity extends AppCompatActivity {
         Font FONT_FOOTER = new Font(Font.FontFamily.HELVETICA, 18, Font.NORMAL);
 
         try {
+
             ImageView iv = (ImageView) findViewById(R.id.imageView);
 
             File pdfFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "prueba.pdf");
-            //PdfWriter.getInstance(documento, new FileOutputStream(pdfFile));
+
+            PdfWriter.getInstance(documento, new FileOutputStream(pdfFile));
+
+
+            documento.open();
+            documento.add(createTableImage(30, R.mipmap.ic_google_foreground, 0, 0));
+            documento.add(createTable(FONT_TITLE, "LS24R350FZLXZX", 0, 50));
+            documento.add(createTable(FONT_FOOTER, "LS24R350FZLXZX", 10, 0));
+            documento.add(createTable(FONT_FOOTER, "B09PRSV4MR", 10, 10));
+            documento.add(createTableImage(55, R.mipmap.ic_qr_foreground, 0, 0));
+            documento.add(createTable(FONT_FOOTER, "QR", 10, 0));
+            documento.add(createTable(FONT_FOOTER, "https://www.amazon.com.mx/SAMSUNG-LS24R350FZLXZX-Monitor-Experiencia-inmersiva/dp/B09PRSV4MR?ref_=Oct_DLandingS_D_7c6e4843_0", 10, 0));
+
+            documento.close();
+
+
+            if(!pdfFile.exists()) {
+                pdfFile.createNewFile();
+            }
+
 
             //
             ParcelFileDescriptor fb = ParcelFileDescriptor.open(pdfFile, ParcelFileDescriptor.MODE_READ_ONLY);
@@ -82,8 +102,6 @@ public class MainActivity extends AppCompatActivity {
                     Bitmap.Config.RGB_565);
             pdfiumCore.renderPageBitmap(pdfDocument, bitmap, pageNum, 0, 0,
                     width, height);
-            //if you need to render annotations and form fields, you can use
-            //the same method above adding 'true' as last param
 
             iv.setImageBitmap(bitmap);
 
@@ -91,31 +109,20 @@ public class MainActivity extends AppCompatActivity {
 
             pdfiumCore.closeDocument(pdfDocument); // important!
 
-
-
-/*
-            documento.open();
-            documento.add(createTableImage(30, R.mipmap.ic_google_foreground, 0, 0));
-            documento.add(createTable(FONT_TITLE, "LS24R350FZLXZX", 0, 50));
-            documento.add(createTable(FONT_FOOTER, "LS24R350FZLXZX", 10, 0));
-            documento.add(createTable(FONT_FOOTER, "B09PRSV4MR", 10, 10));
-            documento.add(createTableImage(55, R.mipmap.ic_qr_foreground, 0, 0));
-            documento.add(createTable(FONT_FOOTER, "QR", 10, 0));
-            documento.add(createTable(FONT_FOOTER, "https://www.amazon.com.mx/SAMSUNG-LS24R350FZLXZX-Monitor-Experiencia-inmersiva/dp/B09PRSV4MR?ref_=Oct_DLandingS_D_7c6e4843_0", 10, 0));
-
-            documento.close();
-            */
             Toast.makeText(this, "Creado", Toast.LENGTH_SHORT).show();
 
         }catch(Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.e("createPDF", "----------------------");
+            Log.e("createPDF", e.toString());
+            Log.e("createPDF", "----------------------");
         }
 
 
 
 
     }
-/*
+
     private PdfPTable createTableImage( int width, int source, int top, int bottom)  {
         PdfPTable table = new PdfPTable(1);
 
@@ -162,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
         return img;
     }
 
-
+/*
     void openPdf() {
         ImageView iv = (ImageView) findViewById(R.id.imageView);
 
