@@ -2,6 +2,7 @@ package com.app.pdf;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -40,6 +41,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     Button btnPDF;
+    Button btnSecond;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
 
         btnPDF = findViewById(R.id.btnPDF);
         btnPDF.setOnClickListener(v -> pdf());
+        btnSecond = findViewById(R.id.btnSecondActivity);
+        btnSecond.setOnClickListener(v -> startActivity(new Intent(this, SecondActivity.class)));
 
     }
 
@@ -169,47 +173,6 @@ public class MainActivity extends AppCompatActivity {
         return img;
     }
 
-/*
-    void openPdf() {
-        ImageView iv = (ImageView) findViewById(R.id.imageView);
-
-        try {
-            ParcelFileDescriptor fb = ParcelFileDescriptor.open(new File("/sdcard/test.pdf"), ParcelFileDescriptor.MODE_READ_ONLY);
-            PdfiumCore pdfiumCore = new PdfiumCore(this);
-        }catch (Exception e) {
-            Log.e("openPdf", "error: " + e.getMessage(), e);
-        }
-
-//        ParcelFileDescriptor fd = ...;
-        int pageNum = 0;
-        PdfiumCore pdfiumCore = new PdfiumCore(this);
-        try {
-            com.shockwave.pdfium.PdfDocument pdfDocument = pdfiumCore.newDocument(fd);
-
-            pdfiumCore.openPage(pdfDocument, pageNum);
-
-            int width = pdfiumCore.getPageWidthPoint(pdfDocument, pageNum);
-            int height = pdfiumCore.getPageHeightPoint(pdfDocument, pageNum);
-
-            // ARGB_8888 - best quality, high memory usage, higher possibility of OutOfMemoryError
-            // RGB_565 - little worse quality, twice less memory usage
-            Bitmap bitmap = Bitmap.createBitmap(width, height,
-                    Bitmap.Config.RGB_565);
-            pdfiumCore.renderPageBitmap(pdfDocument, bitmap, pageNum, 0, 0,
-                    width, height);
-            //if you need to render annotations and form fields, you can use
-            //the same method above adding 'true' as last param
-
-            iv.setImageBitmap(bitmap);
-
-            printInfo(pdfiumCore, pdfDocument);
-
-            pdfiumCore.closeDocument(pdfDocument); // important!
-        } catch(IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-*/
     public void printInfo(PdfiumCore core, PdfDocument doc) {
         PdfDocument.Meta meta = core.getDocumentMeta(doc);
         Log.e(null, "title = " + meta.getTitle());
