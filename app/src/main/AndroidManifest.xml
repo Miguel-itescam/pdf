@@ -17,7 +17,6 @@
             android:name=".SecondActivity"
             android:exported="true"
             android:parentActivityName=".MainActivity"
-            android:resizeableActivity="true"
             />
         <activity
             android:name=".MainActivity"
